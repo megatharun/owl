@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+
+'''owl: ombakwarna macro language (pre-alpha version)
+
+owl is a very simple interactive language intended to
+be implemented as macro language in ombakwarna software.
+
+Author: Megat Harun Al Rashid bin Megat Ahmad
+
+Copyright (C) 2020  Agensi Nuklear Malaysia
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.'''
+
+#-----------------------------------------START--------------------------------------------
+
+import os
+from termcolor import colored
+import numpy as np
+
+print ('{owl: ombakwarna macro language (pre-alpha version)')
+print ('interactive interpreter, License: GPL version 2')
+print ('Copyright (c) 2020 Agensi Nuklear Malaysia, Bangi}\n')
+
+dataH = []
+dataS = dict()
+
+RSV = [                     # RSV = Reserved string value
+        (':=','+','?01?'),
+        ('^','**','?02?'),
+        ('=','==','?03?'),
+        ('array','np.array','?04?'),
+        ('sum','np.sum','?05?'),
+        ('log','np.log','?06?'),
+        ('sin','np.sin','?07?'),
+        ('cos','np.cos','?08?'),
+        ('tan','np.tan','?09?'),
+        ('pi','np.pi','?10?'),
+        ('exp','np.exp','?11?'),
+        ('mean','np.mean','?12?'),
+        ('median','np.median','?13?'),
+        ('std','np.std','?14?'),
+        ('var','np.var','?15?')
+        ]
+
+class Macro:
+
+    def __init__(self,lineStr):
+
+        self.lineStr = lineStr
+
+    def evaluate(self):
+
+        self.lineStrLen = self.lineStr.replace(' ','').split(':=')
+
+        if len(self.lineStrLen)==2:
+
+            self.lineStr = self.lineStrLen[1] # Pass the right asssignment for eval() later
+
+        else:
+            pass
+            
+        for i1,j1 in enumerate(RSV): # enumerating RSV
+
+            self.lineStr = self.lineStr.replace(j1[0],j1[2])
+
+        for i2,j2 in enumerate([*dataS]):
+        
+            self.lineStr = self.lineStr.replace(j2,"dataS['"+(j2)+"']")
+            
+        for i3,j3 in enumerate(RSV): # enumerating RSV again
+
+            self.lineStr = self.lineStr.replace(j3[2],j3[1])
+
+        if len(self.lineStrLen)==2:
+
+            dataS[self.lineStrLen[0]] = eval(compile(self.lineStr, '<string>', 'eval'))
+
+        else:
+            print (colored('[out]:\n','red','on_cyan', attrs=['bold']),
+                (eval(compile(self.lineStr, '<string>', 'eval'))))
+
+a = input(colored('[in]: ','yellow','on_cyan', attrs=['bold']))
+
+while(True):
+
+    if a=='':
+        a = input(colored('[in]: ','yellow','on_cyan', attrs=['bold'])) # To enter without input
+    elif a==b'\x0c'.decode(): # To clear the screen
+        os.system('clear')
+        a = input(colored('[in]: ','yellow','on_cyan', attrs=['bold']))
+    if a=='q()' or a=='quit()': # To exit
+        break
+
+    b = Macro(a.replace('[in]: ',''))
+    b.evaluate()
+
+    a = input(colored('[in]: ','yellow','on_cyan', attrs=['bold']))   
+
+#------------------------------------------END---------------------------------------------
