@@ -44,19 +44,18 @@ RSV = [                     # RSV = Reserved string value
         (':=','=','?01?'),
         ('^','**','?02?'),
         ('=','==','?03?'),
-        ('[','np.array([','?04?'),
-        (']','])','?05?'),        
-        ('sum','np.sum','?06?'),
-        ('log','np.log','?07?'),
-        ('sin','np.sin','?08?'),
-        ('cos','np.cos','?09?'),
-        ('tan','np.tan','?10?'),
-        ('pi','np.pi','?11?'),
-        ('exp','np.exp','?12?'),
-        ('mean','np.mean','?13?'),
-        ('median','np.median','?14?'),
-        ('std','np.std','?15?'),
-        ('var','np.var','?16?')
+        ('array','np.array','?04?'),
+        ('sum','np.sum','?05?'),
+        ('log','np.log','?06?'),
+        ('sin','np.sin','?07?'),
+        ('cos','np.cos','?08?'),
+        ('tan','np.tan','?09?'),
+        ('pi','np.pi','?10?'),
+        ('exp','np.exp','?11?'),
+        ('mean','np.mean','?12?'),
+        ('median','np.median','?13?'),
+        ('std','np.std','?14?'),
+        ('var','np.var','?15?')
         ]
 
 class Macro:
