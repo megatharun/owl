@@ -1,5 +1,5 @@
 # owl
-owl is a very simple language under development intended to be part of ombakwarna as macro language
+owl is a very simple language under development intended to be part of macro language for ombakwarna.
 
 Installation instructions:
 
