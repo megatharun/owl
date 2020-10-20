@@ -37,8 +37,8 @@ print ('{owl: ombakwarna macro language (pre-alpha version)')
 print ('interactive interpreter, License: GPL version 2')
 print ('Copyright (c) 2020 Agensi Nuklear Malaysia, Bangi}\n')
 
-dataH = []
-dataS = dict()
+dataH = list()
+_1 = dict()
 
 RSV = [                     # RSV = Reserved string value
         (':=','=','?01?'),
@@ -62,6 +62,7 @@ class Macro:
 
     def __init__(self,lineStr):
 
+        dataH.append(lineStr)
         self.lineStr = lineStr
 
     def evaluate(self):
@@ -76,15 +77,15 @@ class Macro:
         for i1,j1 in enumerate(RSV): # enumerating RSV
             self.lineStr = self.lineStr.replace(j1[0],j1[2])
 
-        for i2,j2 in enumerate([*dataS]): # embedding reference to data structure
-            self.lineStr = self.lineStr.replace(j2,"dataS['"+(j2)+"']")
+        for i2,j2 in enumerate([*_1]): # embedding reference to data structure
+            self.lineStr = self.lineStr.replace(j2,"_1['"+(j2)+"']")
             
         for i3,j3 in enumerate(RSV): # enumerating RSV again
             self.lineStr = self.lineStr.replace(j3[2],j3[1])
 
         if len(self.lineStrLen)==2:
             # passing evaluated expression to data structure dictionary
-            dataS[self.lineStrLen[0]] = eval(compile(self.lineStr, '<string>', 'eval'))
+            _1[self.lineStrLen[0]] = eval(compile(self.lineStr, '<string>', 'eval'))
         else:
             # printing output
             print (colored('[out]:\n','red','on_cyan', attrs=['bold']),
@@ -92,19 +93,30 @@ class Macro:
 
 while(True):
 
-    a = input(colored('[in]: ','yellow','on_cyan', attrs=['bold']))
+    try:
+        a = input(colored('[in]: ','yellow','on_cyan', attrs=['bold']))
 
-    if a=='q()': # To exit
-        break
-    elif a=='quit()': # To exit
-        break
-    elif a=='': # Empty input
-        pass
-    elif a==b'\x0c'.decode(): # To clear the screen
-        os.system('clear') # for Linux
-        # os.system('cls') # for Windows
-        pass
-    else:    
-        b = Macro(a.replace('[in]: ',''))
-        b.evaluate()
+        if a=='q()': # To exit
+            break
+        elif a=='quit()': # To exit
+            break
+        elif a=='': # Empty input
+            pass
+        elif a==b'\x0c'.decode(): # To clear the screen
+            os.system('clear') # for Linux
+            # os.system('cls') # for Windows
+            pass
+
+        else:    
+            b = Macro(a.replace('[in]: ',''))
+            b.evaluate()
+
+    except Exception as err: # Error management
+
+        err = str(err)
+        for i4,j4 in enumerate(RSV): # enumerating RSV
+            err = err.replace(j4[1],j4[0])
+
+        print('error:', err)
+
 #------------------------------------------END---------------------------------------------
